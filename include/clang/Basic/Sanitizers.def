@@ -38,8 +38,11 @@
 #endif
 
 
+// Heapologist
+SANITIZER("heapologist", Heapologist)
 // AddressSanitizer
 SANITIZER("address", Address)
+
 
 // Kernel AddressSanitizer (KASan)
 SANITIZER("kernel-address", KernelAddress)
@@ -129,6 +132,7 @@ SANITIZER("efficiency-working-set", EfficiencyWorkingSet)
 // Meta-group only used internally.
 SANITIZER_GROUP("efficiency-all", Efficiency,
                 EfficiencyCacheFrag | EfficiencyWorkingSet)
+
 
 // Magic group, containing all sanitizers. For example, "-fno-sanitize=all"
 // can be used to disable all the sanitizers.
