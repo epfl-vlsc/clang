@@ -1290,6 +1290,7 @@ SanitizerMask Darwin::getSupportedSanitizers() const {
   const bool IsX86_64 = getTriple().getArch() == llvm::Triple::x86_64;
   SanitizerMask Res = ToolChain::getSupportedSanitizers();
   Res |= SanitizerKind::Address;
+  Res |= SanitizerKind::Heapologist;
   if (isTargetMacOS()) {
     if (!isMacosxVersionLT(10, 9))
       Res |= SanitizerKind::Vptr;
@@ -4723,6 +4724,7 @@ SanitizerMask Linux::getSupportedSanitizers() const {
                          getTriple().getArch() == llvm::Triple::aarch64_be;
   SanitizerMask Res = ToolChain::getSupportedSanitizers();
   Res |= SanitizerKind::Address;
+  Res |= SanitizerKind::Heapologist;
   Res |= SanitizerKind::KernelAddress;
   Res |= SanitizerKind::Vptr;
   Res |= SanitizerKind::SafeStack;
