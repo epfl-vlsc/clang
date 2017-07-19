@@ -456,6 +456,9 @@ void DarwinClang::AddLinkRuntimeLibArgs(const ArgList &Args,
   }
   if (Sanitize.needsEsanRt())
     AddLinkSanitizerLibArgs(Args, CmdArgs, "esan");
+  if (Sanitize.needsHplgstRt()) {
+    AddLinkSanitizerLibArgs(Args, CmdArgs, "hplgst");
+  }
 
   // Otherwise link libSystem, then the dynamic runtime library, and finally any
   // target specific static runtime library.
