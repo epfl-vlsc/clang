@@ -65,8 +65,8 @@ class SanitizerArgs {
   bool needsEsanRt() const {
     return Sanitizers.hasOneOf(SanitizerKind::Efficiency);
   }
-  bool needsHplgstRt() const {
-    return Sanitizers.hasOneOf(SanitizerKind::Heapologist);
+  bool needsMemoroRt() const {
+    return Sanitizers.hasOneOf(SanitizerKind::Memoro);
   }
 
   bool requiresPIE() const;

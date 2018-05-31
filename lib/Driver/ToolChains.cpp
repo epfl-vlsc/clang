@@ -456,8 +456,8 @@ void DarwinClang::AddLinkRuntimeLibArgs(const ArgList &Args,
   }
   if (Sanitize.needsEsanRt())
     AddLinkSanitizerLibArgs(Args, CmdArgs, "esan");
-  if (Sanitize.needsHplgstRt()) {
-    AddLinkSanitizerLibArgs(Args, CmdArgs, "hplgst");
+  if (Sanitize.needsMemoroRt()) {
+    AddLinkSanitizerLibArgs(Args, CmdArgs, "memoro");
   }
 
   // Otherwise link libSystem, then the dynamic runtime library, and finally any
@@ -1293,7 +1293,7 @@ SanitizerMask Darwin::getSupportedSanitizers() const {
   const bool IsX86_64 = getTriple().getArch() == llvm::Triple::x86_64;
   SanitizerMask Res = ToolChain::getSupportedSanitizers();
   Res |= SanitizerKind::Address;
-  Res |= SanitizerKind::Heapologist;
+  Res |= SanitizerKind::Memoro;
   if (isTargetMacOS()) {
     if (!isMacosxVersionLT(10, 9))
       Res |= SanitizerKind::Vptr;
@@ -4727,7 +4727,7 @@ SanitizerMask Linux::getSupportedSanitizers() const {
                          getTriple().getArch() == llvm::Triple::aarch64_be;
   SanitizerMask Res = ToolChain::getSupportedSanitizers();
   Res |= SanitizerKind::Address;
-  Res |= SanitizerKind::Heapologist;
+  Res |= SanitizerKind::Memoro;
   Res |= SanitizerKind::KernelAddress;
   Res |= SanitizerKind::Vptr;
   Res |= SanitizerKind::SafeStack;

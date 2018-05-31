@@ -41,7 +41,7 @@
 // AddressSanitizer
 SANITIZER("address", Address)
 
-SANITIZER("memoro", Heapologist)
+SANITIZER("memoro", Memoro)
 
 // Kernel AddressSanitizer (KASan)
 SANITIZER("kernel-address", KernelAddress)

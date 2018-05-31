@@ -3340,8 +3340,8 @@ collectSanitizerRuntimes(const ToolChain &TC, const ArgList &Args,
   }
   if (SanArgs.needsEsanRt())
     StaticRuntimes.push_back("esan");
-  if (SanArgs.needsHplgstRt()) {
-    StaticRuntimes.push_back("hplgst");
+  if (SanArgs.needsMemoroRt()) {
+    StaticRuntimes.push_back("memoro");
   }
 }
 
