@@ -1,3 +1,6 @@
+
+This is a fork of Clang for development of [Memoro](https://github.com/epfl-vlsc/memoro) static instrumentation. 
+
 //===----------------------------------------------------------------------===//
 // C Language Family Front-end
 //===----------------------------------------------------------------------===//
