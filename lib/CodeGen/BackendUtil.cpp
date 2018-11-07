@@ -313,6 +313,14 @@ static void addEfficiencySanitizerPass(const PassManagerBuilder &Builder,
   PM.add(createEfficiencySanitizerPass(Opts));
 }
 
+static void addMemoroPass(const PassManagerBuilder &Builder,
+        legacy::PassManagerBase &PM) {
+    const PassManagerBuilderWrapper &BuilderWrapper =
+        static_cast<const PassManagerBuilderWrapper&>(Builder);
+    MemoroOptions Opts;
+    PM.add(createMemoroPass(Opts));
+}
+
 static TargetLibraryInfoImpl *createTLII(llvm::Triple &TargetTriple,
                                          const CodeGenOptions &CodeGenOpts) {
   TargetLibraryInfoImpl *TLII = new TargetLibraryInfoImpl(TargetTriple);
@@ -632,6 +640,13 @@ void EmitAssemblyHelper::CreatePasses(legacy::PassManager &MPM,
                            addEfficiencySanitizerPass);
     PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
                            addEfficiencySanitizerPass);
+  }
+
+  if (LangOpts.Sanitize.hasOneOf(SanitizerKind::Memoro)) {
+      PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
+              addMemoroPass);
+      PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
+              addMemoroPass);
   }
 
   // Set up the per-function pass manager.

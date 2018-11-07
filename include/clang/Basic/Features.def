@@ -77,6 +77,7 @@ FEATURE(thread_sanitizer, LangOpts.Sanitize.has(SanitizerKind::Thread))
 FEATURE(dataflow_sanitizer, LangOpts.Sanitize.has(SanitizerKind::DataFlow))
 FEATURE(efficiency_sanitizer,
         LangOpts.Sanitize.hasOneOf(SanitizerKind::Efficiency))
+FEATURE(memoro, LangOpts.Sanitize.hasOneOf(SanitizerKind::Memoro))
 FEATURE(scudo, LangOpts.Sanitize.hasOneOf(SanitizerKind::Scudo))
 // Objective-C features
 FEATURE(objc_arr, LangOpts.ObjCAutoRefCount) // FIXME: REMOVE?

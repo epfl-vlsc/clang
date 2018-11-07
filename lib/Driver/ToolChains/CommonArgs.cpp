@@ -675,6 +675,8 @@ collectSanitizerRuntimes(const ToolChain &TC, const ArgList &Args,
   }
   if (SanArgs.needsEsanRt())
     StaticRuntimes.push_back("esan");
+  if (SanArgs.needsMemoroRt())
+    StaticRuntimes.push_back("memoro");
   if (SanArgs.needsScudoRt()) {
     if (SanArgs.requiresMinimalRuntime()) {
       StaticRuntimes.push_back("scudo_minimal");

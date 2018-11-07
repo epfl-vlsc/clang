@@ -1109,6 +1109,8 @@ void DarwinClang::AddLinkRuntimeLibArgs(const ArgList &Args,
   }
   if (Sanitize.needsEsanRt())
     AddLinkSanitizerLibArgs(Args, CmdArgs, "esan");
+  if (Sanitize.needsMemoroRt())
+    AddLinkSanitizerLibArgs(Args, CmdArgs, "memoro");
 
   // Otherwise link libSystem, then the dynamic runtime library, and finally any
   // target specific static runtime library.
@@ -2290,6 +2292,7 @@ SanitizerMask Darwin::getSupportedSanitizers() const {
   const bool IsX86_64 = getTriple().getArch() == llvm::Triple::x86_64;
   SanitizerMask Res = ToolChain::getSupportedSanitizers();
   Res |= SanitizerKind::Address;
+  Res |= SanitizerKind::Memoro;
   Res |= SanitizerKind::Leak;
   Res |= SanitizerKind::Fuzzer;
   Res |= SanitizerKind::FuzzerNoLink;
