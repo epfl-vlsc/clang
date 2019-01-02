@@ -317,8 +317,7 @@ static void addMemoroPass(const PassManagerBuilder &Builder,
         legacy::PassManagerBase &PM) {
     const PassManagerBuilderWrapper &BuilderWrapper =
         static_cast<const PassManagerBuilderWrapper&>(Builder);
-    MemoroOptions Opts;
-    PM.add(createMemoroPass(Opts));
+    PM.add(createMemoroPass());
 }
 
 static TargetLibraryInfoImpl *createTLII(llvm::Triple &TargetTriple,
