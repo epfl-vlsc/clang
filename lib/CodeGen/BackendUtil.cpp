@@ -314,7 +314,7 @@ static void addEfficiencySanitizerPass(const PassManagerBuilder &Builder,
 }
 
 static void addMemoroPass(const PassManagerBuilder &Builder,
-        legacy::PassManagerBase &PM) {
+                          legacy::PassManagerBase &PM) {
     const PassManagerBuilderWrapper &BuilderWrapper =
         static_cast<const PassManagerBuilderWrapper&>(Builder);
     PM.add(createMemoroPass());
@@ -643,9 +643,9 @@ void EmitAssemblyHelper::CreatePasses(legacy::PassManager &MPM,
 
   if (LangOpts.Sanitize.hasOneOf(SanitizerKind::Memoro)) {
       PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
-              addMemoroPass);
+                             addMemoroPass);
       PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
-              addMemoroPass);
+                             addMemoroPass);
   }
 
   // Set up the per-function pass manager.
