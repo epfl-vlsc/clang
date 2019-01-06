@@ -17,6 +17,9 @@ extern "C" {
 
   extern char *strchr(const char *s, int c);
   extern void *memchr(const void *s, int c, size_t n);
+
+  extern void *memcpy(void *d, const void *s, size_t n);
+  extern void *memmove(void *d, const void *s, size_t n);
 }
 # 25 "SemaCXX/constexpr-string.cpp" 2
 
@@ -33,6 +36,9 @@ extern "C" {
 
   extern wchar_t *wcschr(const wchar_t *s, wchar_t c);
   extern wchar_t *wmemchr(const wchar_t *s, wchar_t c, size_t n);
+
+  extern wchar_t *wmemcpy(wchar_t *d, const wchar_t *s, size_t n);
+  extern wchar_t *wmemmove(wchar_t *d, const wchar_t *s, size_t n);
 }
 
 # 45 "SemaCXX/constexpr-string.cpp" 2

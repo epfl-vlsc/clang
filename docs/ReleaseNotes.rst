@@ -52,14 +52,8 @@ Major New Features
   example, due to renaming a class or namespace).
   See the :doc:`UsersManual` for details.
 
-- Preliminary/experimental support for DWARF v5 debugging information. If you
-  compile with ``-gdwarf-5 -O0`` you should get fully conforming DWARF v5
-  information, including the new .debug_names accelerator table. Type units
-  and split DWARF are known not to conform, and higher optimization levels
-  will likely get a mix of v4 and v5 formats.
-
 Improvements to Clang's diagnostics
------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``-Wextra-semi-stmt`` is a new diagnostic that diagnoses extra semicolons,
   much like ``-Wextra-semi``. This new diagnostic diagnoses all *unnecessary*
@@ -142,15 +136,15 @@ New Compiler Flags
   instrumenting for gcov-based profiling.
   See the :doc:`UsersManual` for details.
 
-- Added the ``-mcrc`` and ``-mno-crc`` flags to enable/disable using
-  of MIPS Cyclic Redundancy Check instructions.
+- ...
 
-- Added the ``-mvirt`` and ``-mno-virt`` flags to enable/disable using
-  of MIPS Virtualization instructions.
+Deprecated Compiler Flags
+-------------------------
 
-- Added the ``-mginv`` and ``-mno-ginv`` flags to enable/disable using
-  of MIPS Global INValidate instructions.
+The following options are deprecated and ignored. They will be removed in
+future versions of Clang.
 
+- ...
 
 Modified Compiler Flags
 -----------------------
@@ -188,42 +182,37 @@ Windows Support
 - ...
 
 
+C Language Changes in Clang
+---------------------------
+
+- ...
+
+...
+
+C11 Feature Support
+^^^^^^^^^^^^^^^^^^^
+
+...
+
+C++ Language Changes in Clang
+-----------------------------
+
+- ...
+
+C++1z Feature Support
+^^^^^^^^^^^^^^^^^^^^^
+
+...
+
 Objective-C Language Changes in Clang
 -------------------------------------
 
-Clang now supports the GNUstep Objective-C ABI v2 on ELF platforms.  This is
-enabled with the ``-fobjc-runtime=gnustep-2.0`` flag.  The new ABI is incompatible
-with the older GNUstep ABIs, which were incremental changes on the old GCC ABI.
-The new ABI provides richer reflection metadata and allows the linker to remove
-duplicate selector and protocol definitions, giving smaller binaries.  Windows
-support for the new ABI is underway, but was not completed in time for the LLVM
-7.0.0 release.
+...
 
-OpenCL C/C++ Language Changes in Clang
---------------------------------------
+OpenCL C Language Changes in Clang
+----------------------------------
 
-Miscellaneous changes in OpenCL C:
-
-- Added ``cles_khr_int64`` extension.
-
-- Added bug fixes and simplifications to Clang blocks in OpenCL mode.
-
-- Added compiler flag ``-cl-uniform-work-group-size`` to allow extra compile time optimisation.
-
-- Propagate ``denorms-are-zero`` attribute to IR if ``-cl-denorms-are-zero`` is passed to the compiler.
-
-- Separated ``read_only`` and ``write_only`` pipe IR types.
-
-- Fixed address space for the ``__func__`` predefined macro.
-
-- Improved diagnostics of kernel argument types.
-
-
-Started OpenCL C++ support:
-
-- Added ``-std/-cl-std=c++``.
-
-- Added support for keywords.
+...
 
 ABI Changes in Clang
 --------------------
@@ -256,19 +245,31 @@ These are major API changes that have happened since the 7.0.0 release of
 Clang. If upgrading an external codebase that uses Clang as a library,
 this section should help get you past the largest hurdles of upgrading.
 
-- The methods ``getLocStart``, ``getStartLoc`` and ``getLocEnd`` in the AST
-  classes are deprecated.  New APIs ``getBeginLoc`` and ``getEndLoc`` should
-  be used instead.  While the old methods remain in this release, they will
-  not be present in the next release of Clang.
+-  ...
+
+AST Matchers
+------------
+
+- ...
 
 clang-format
 ------------
 
 
+- ...
+
+libclang
+--------
+
+...
+
+
 Static Analyzer
 ---------------
 
-- The new `MmapWriteExec` checker had been introduced to detect attempts to map pages both writable and executable.
+- ...
+
+...
 
 .. _release-notes-ubsan:
 
@@ -302,16 +303,25 @@ Undefined Behavior Sanitizer (UBSan)
 * The Implicit Conversion Sanitizer (``-fsanitize=implicit-conversion``) has
   learned to sanitize compound assignment operators.
 
+Core Analysis Improvements
+==========================
 
-libc++ Changes
-==============
-Users that wish to link together translation units built with different
-versions of libc++'s headers into the same final linked image should define the
-`_LIBCPP_HIDE_FROM_ABI_PER_TU` macro to `1` when building those translation
-units. In a future release, not defining `_LIBCPP_HIDE_FROM_ABI_PER_TU` to `1`
-and linking translation units built with different versions of libc++'s headers
-together may lead to ODR violations and ABI issues.
+- ...
 
+New Issues Found
+================
+
+- ...
+
+Python Binding Changes
+----------------------
+
+The following methods have been added:
+
+-  ...
+
+Significant Known Problems
+==========================
 
 Additional Information
 ======================
