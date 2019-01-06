@@ -321,25 +321,6 @@ namespace {
       return false;
     }
 
-    /// Get the range of valid index adjustments in the form
-    ///   {maximum value that can be subtracted from this pointer,
-    ///    maximum value that can be added to this pointer}
-    std::pair<uint64_t, uint64_t> validIndexAdjustments() {
-      if (Invalid || isMostDerivedAnUnsizedArray())
-        return {0, 0};
-
-      // [expr.add]p4: For the purposes of these operators, a pointer to a
-      // nonarray object behaves the same as a pointer to the first element of
-      // an array of length one with the type of the object as its element type.
-      bool IsArray = MostDerivedPathLength == Entries.size() &&
-                     MostDerivedIsArrayElement;
-      uint64_t ArrayIndex =
-          IsArray ? Entries.back().ArrayIndex : (uint64_t)IsOnePastTheEnd;
-      uint64_t ArraySize =
-          IsArray ? getMostDerivedArraySize() : (uint64_t)1;
-      return {ArrayIndex, ArraySize - ArrayIndex};
-    }
-
     /// Check that this refers to a valid subobject.
     bool isValidSubobject() const {
       if (Invalid)
@@ -1746,54 +1727,6 @@ static bool IsGlobalLValue(APValue::LValueBase B) {
   }
 }
 
-static const ValueDecl *GetLValueBaseDecl(const LValue &LVal) {
-  return LVal.Base.dyn_cast<const ValueDecl*>();
-}
-
-static bool IsLiteralLValue(const LValue &Value) {
-  if (Value.getLValueCallIndex())
-    return false;
-  const Expr *E = Value.Base.dyn_cast<const Expr*>();
-  return E && !isa<MaterializeTemporaryExpr>(E);
-}
-
-static bool IsWeakLValue(const LValue &Value) {
-  const ValueDecl *Decl = GetLValueBaseDecl(Value);
-  return Decl && Decl->isWeak();
-}
-
-static bool isZeroSized(const LValue &Value) {
-  const ValueDecl *Decl = GetLValueBaseDecl(Value);
-  if (Decl && isa<VarDecl>(Decl)) {
-    QualType Ty = Decl->getType();
-    if (Ty->isArrayType())
-      return Ty->isIncompleteType() ||
-             Decl->getASTContext().getTypeSize(Ty) == 0;
-  }
-  return false;
-}
-
-static bool HasSameBase(const LValue &A, const LValue &B) {
-  if (!A.getLValueBase())
-    return !B.getLValueBase();
-  if (!B.getLValueBase())
-    return false;
-
-  if (A.getLValueBase().getOpaqueValue() !=
-      B.getLValueBase().getOpaqueValue()) {
-    const Decl *ADecl = GetLValueBaseDecl(A);
-    if (!ADecl)
-      return false;
-    const Decl *BDecl = GetLValueBaseDecl(B);
-    if (!BDecl || ADecl->getCanonicalDecl() != BDecl->getCanonicalDecl())
-      return false;
-  }
-
-  return IsGlobalLValue(A.getLValueBase()) ||
-         (A.getLValueCallIndex() == B.getLValueCallIndex() &&
-          A.getLValueVersion() == B.getLValueVersion());
-}
-
 static void NoteLValueLocation(EvalInfo &Info, APValue::LValueBase Base) {
   assert(Base && "no location for a null lvalue");
   const ValueDecl *VD = Base.dyn_cast<const ValueDecl*>();
@@ -2003,6 +1936,33 @@ CheckConstantExpression(EvalInfo &Info, SourceLocation DiagLoc, QualType Type,
 
   // Everything else is fine.
   return true;
+}
+
+static const ValueDecl *GetLValueBaseDecl(const LValue &LVal) {
+  return LVal.Base.dyn_cast<const ValueDecl*>();
+}
+
+static bool IsLiteralLValue(const LValue &Value) {
+  if (Value.getLValueCallIndex())
+    return false;
+  const Expr *E = Value.Base.dyn_cast<const Expr*>();
+  return E && !isa<MaterializeTemporaryExpr>(E);
+}
+
+static bool IsWeakLValue(const LValue &Value) {
+  const ValueDecl *Decl = GetLValueBaseDecl(Value);
+  return Decl && Decl->isWeak();
+}
+
+static bool isZeroSized(const LValue &Value) {
+  const ValueDecl *Decl = GetLValueBaseDecl(Value);
+  if (Decl && isa<VarDecl>(Decl)) {
+    QualType Ty = Decl->getType();
+    if (Ty->isArrayType())
+      return Ty->isIncompleteType() ||
+             Decl->getASTContext().getTypeSize(Ty) == 0;
+  }
+  return false;
 }
 
 static bool EvalPointerValueAsBool(const APValue &Value, bool &Result) {
@@ -8721,6 +8681,27 @@ bool IntExprEvaluator::VisitBuiltinCallExpr(const CallExpr *E,
     return Success(DidOverflow, E);
   }
   }
+}
+
+static bool HasSameBase(const LValue &A, const LValue &B) {
+  if (!A.getLValueBase())
+    return !B.getLValueBase();
+  if (!B.getLValueBase())
+    return false;
+
+  if (A.getLValueBase().getOpaqueValue() !=
+      B.getLValueBase().getOpaqueValue()) {
+    const Decl *ADecl = GetLValueBaseDecl(A);
+    if (!ADecl)
+      return false;
+    const Decl *BDecl = GetLValueBaseDecl(B);
+    if (!BDecl || ADecl->getCanonicalDecl() != BDecl->getCanonicalDecl())
+      return false;
+  }
+
+  return IsGlobalLValue(A.getLValueBase()) ||
+         (A.getLValueCallIndex() == B.getLValueCallIndex() &&
+          A.getLValueVersion() == B.getLValueVersion());
 }
 
 /// Determine whether this is a pointer past the end of the complete

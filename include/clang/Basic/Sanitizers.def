@@ -41,6 +41,9 @@
 // AddressSanitizer
 SANITIZER("address", Address)
 
+// HeapProfiler
+SANITIZER("memoro", Memoro)
+
 // Kernel AddressSanitizer (KASan)
 SANITIZER("kernel-address", KernelAddress)
 
