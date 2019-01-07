@@ -331,9 +331,8 @@ static void addEfficiencySanitizerPass(const PassManagerBuilder &Builder,
 
 static void addMemoroPass(const PassManagerBuilder &Builder,
                           legacy::PassManagerBase &PM) {
-    const PassManagerBuilderWrapper &BuilderWrapper =
-        static_cast<const PassManagerBuilderWrapper&>(Builder);
-    PM.add(createMemoroPass());
+  // No options for Memoro yet
+  PM.add(createMemoroPass());
 }
 
 static TargetLibraryInfoImpl *createTLII(llvm::Triple &TargetTriple,
