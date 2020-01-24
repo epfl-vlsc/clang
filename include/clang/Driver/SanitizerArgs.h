@@ -78,7 +78,7 @@ class SanitizerArgs {
     return Sanitizers.hasOneOf(SanitizerKind::Efficiency);
   }
   bool needsMemoroRt() const {
-    return Sanitizers.hasOneOf(SanitizerKind::Memoro);
+    return Sanitizers.has(SanitizerKind::Memoro);
   }
   bool needsScudoRt() const { return Sanitizers.has(SanitizerKind::Scudo); }
 

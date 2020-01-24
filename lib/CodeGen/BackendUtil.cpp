@@ -666,7 +666,7 @@ void EmitAssemblyHelper::CreatePasses(legacy::PassManager &MPM,
                            addEfficiencySanitizerPass);
   }
 
-  if (LangOpts.Sanitize.hasOneOf(SanitizerKind::Memoro)) {
+  if (LangOpts.Sanitize.has(SanitizerKind::Memoro)) {
       PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
                              addMemoroPass);
       PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
